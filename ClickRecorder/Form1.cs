@@ -3,11 +3,12 @@ using System.Collections;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Collections.Generic;
-
+using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.IO;
 using MouseKeyboardLibrary;
+using System.IO.IsolatedStorage;
 
 namespace ClickRecorder
 {
@@ -19,13 +20,27 @@ namespace ClickRecorder
         {
             InitializeComponent();
             // Create the mouse hook
-            MouseHook mouseHook = new MouseHook();
+            //MouseHook mouseHook = new MouseHook();
 
         }
 
         private void btn_save_Click(object sender, EventArgs e)
         {
+            Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod());
             lbl_message.Text = "Saving...";
+
+            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "clicks.json");
+            Click test = new Click()
+            {
+             mouseX = 0,
+             mouseY = 1,
+             index = 2,
+             info = "3"
+            };
+
+            string json = JsonConvert.SerializeObject(test);
+            File.WriteAllText(path, json);
+
             System.Environment.Exit(1);
         }
 
@@ -57,48 +72,30 @@ namespace ClickRecorder
 
         }
 
-
-
         void mouseHook_MouseWheel(object sender, MouseEventArgs e)
         {
-
             lbl_message.Text = e.Delta.ToString();
-
             int X = MouseSimulator.X;
             int Y = MouseSimulator.Y;
-
             clicks.Add(new Click(clicks.Count, X, Y));
             this.Controls.Add(clicks[clicks.Count - 1].box);
-
-        }
-
-        void mouseHook_MouseUp(object sender, MouseEventArgs e)
-        {
-
-            lbl_message.Text = e.Button.ToString() + ", " + e.X.ToString() + ", " + e.Y.ToString();
-
-
-            int X = MouseSimulator.X;
-            int Y = MouseSimulator.Y;
-
-            clicks.Add(new Click(clicks.Count, X, Y));
-            this.Controls.Add(clicks[clicks.Count - 1].box);
-
         }
 
         void mouseHook_MouseDown(object sender, MouseEventArgs e)
         {
-
-
             lbl_message.Text = e.Button.ToString() + ", " + e.X.ToString() + ", " + e.Y.ToString();
-
             int X = MouseSimulator.X;
             int Y = MouseSimulator.Y;
-
             clicks.Add(new Click(clicks.Count, X, Y));
             this.Controls.Add(clicks[clicks.Count - 1].box);
-
-
+        }
+        void mouseHook_MouseUp(object sender, MouseEventArgs e)
+        {
+            lbl_message.Text = e.Button.ToString() + ", " + e.X.ToString() + ", " + e.Y.ToString();
+            //int X = MouseSimulator.X;
+            //int Y = MouseSimulator.Y;
+            //clicks.Add(new Click(clicks.Count, X, Y));
+            //this.Controls.Add(clicks[clicks.Count - 1].box);
         }
 
     }

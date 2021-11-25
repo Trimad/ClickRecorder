@@ -10,6 +10,7 @@ using System.Windows.Forms;
 namespace ClickRecorder
 {
 
+    //https://stackoverflow.com/questions/46316025/how-to-resize-controls-inside-groupbox-without-overlapping
     public class Click
     {
         public int index { get; set; }
@@ -24,12 +25,13 @@ namespace ClickRecorder
             this.mouseY = _mouseY;
             //Configure the GroupBox
             this.box = new GroupBox();
-            this.box.Location = new Point(16, 128 + (this.index * 64));
-            //this.box.Size = new Size(256, 32);
+            this.box.Location = new Point(16, 96 + (this.index * 96));
+            //this.box.Size = new Size(256, 64);
             this.box.Text = "Screenshot " + this.index;
-            this.box.Name = "MyGroupbox";
             this.box.AutoSize = true;
-
+            this.box.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            //this.box.Padding = new Padding(0);
+            //this.box.Margin = new Padding(0);
 
             Bitmap bmp = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
             using (Graphics g = Graphics.FromImage(bmp))
@@ -39,28 +41,32 @@ namespace ClickRecorder
             }
 
             PictureBox picture = new PictureBox();
-            picture.Location = new Point(0, 0);
-            picture.Width = 64;
+            //picture.Location = new Point(16, 64 + (this.index * 64));
+            picture.SizeMode = PictureBoxSizeMode.StretchImage;
             picture.Dock = DockStyle.Left;
-            picture.Height = 64;
-            picture.Image = bmp.GetThumbnailImage(64, 64, null, new System.IntPtr());
+            //picture.ClientSize = new Size(48,48);
+            //picture.Image = bmp.GetThumbnailImage(64, 64, null, new System.IntPtr());
+            picture.Image = bmp;
+            //picture.Padding = new Padding(16);
             box.Controls.Add(picture);
 
 
             TextBox text = new TextBox();
-            text.Location = new Point(70, (this.index * 64));
-            text.Width = this.box.Width -64;
-            text.BackColor = Color.White;
-            text.ForeColor = Color.Red;
-            text.AutoSize = true;
+            //text.Location = new Point(64, 48 + (this.index * 48));
+            text.Height = 16;
+            text.Width = this.box.Width;
+            //text.Anchor = AnchorStyles.Right;
+            //text.BackColor = Color.White;
+            //text.ForeColor = Color.Black;
+            //this.box.AutoSize = true;
+            //this.box.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             this.info = "X: " + this.mouseX + " Y: " + this.mouseY;
             text.Text = this.info;
-            text.Name = "text_box1";
             box.Controls.Add(text);
 
 
         }
-
+        public Click() { }
     }
 
 }
