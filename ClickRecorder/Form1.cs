@@ -1,19 +1,17 @@
 ﻿using System;
-using System.Collections;
 using System.Windows.Forms;
-using System.Drawing;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.IO;
 using MouseKeyboardLibrary;
-using System.IO.IsolatedStorage;
 
 namespace ClickRecorder
 {
+
+
     public partial class Form1 : Form
     {
+
         MouseHook mouseHook = new MouseHook();
         List<Click> clicks = new List<Click>();
         public Form1()
@@ -24,35 +22,34 @@ namespace ClickRecorder
 
         }
 
-        private void btn_save_Click(object sender, EventArgs e)
+        private void Btn_save_Click(object sender, EventArgs e)
         {
             Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod());
             lbl_message.Text = "Saving...";
 
-            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "clicks.json");
-            Click test = new Click()
+            List<Click> json_formatted_clicks = new List<Click>();
+
+            foreach (Click c in clicks)
             {
-             mouseX = 0,
-             mouseY = 1,
-             index = 2,
-             info = "3"
-            };
-
-            string json = JsonConvert.SerializeObject(test);
+                c.fileName = c.index.ToString("D3")+".png";
+                c.info = c.getText();
+            }
+            
+            string json = JsonConvert.SerializeObject(clicks);
+            string path = Path.Combine("data", "clicks.json");
             File.WriteAllText(path, json);
-
             System.Environment.Exit(1);
         }
 
-        private void btn_record_Click(object sender, EventArgs e)
+        private void Btn_record_Click(object sender, EventArgs e)
         {
 
             lbl_message.Text = "Recording...";
 
             // Capture the events
-            mouseHook.MouseDown += new MouseEventHandler(mouseHook_MouseDown);
-            mouseHook.MouseUp += new MouseEventHandler(mouseHook_MouseUp);
-            mouseHook.MouseWheel += new MouseEventHandler(mouseHook_MouseWheel);
+            mouseHook.MouseDown += new MouseEventHandler(MouseHook_MouseDown);
+            mouseHook.MouseUp += new MouseEventHandler(MouseHook_MouseUp);
+            mouseHook.MouseWheel += new MouseEventHandler(MouseHook_MouseWheel);
 
             // Start watching for mouse events
             mouseHook.Start();
@@ -60,7 +57,7 @@ namespace ClickRecorder
 
         }
 
-        private void btn_debug_click_Click(object sender, EventArgs e)
+        private void Btn_debug_click_Click(object sender, EventArgs e)
         {
             lbl_message.Text = "Debugging...";
 
@@ -68,28 +65,28 @@ namespace ClickRecorder
             int Y = MouseSimulator.Y;
 
             clicks.Add(new Click(clicks.Count, X, Y));
-            this.Controls.Add(clicks[clicks.Count - 1].box);
+            this.Controls.Add(clicks[clicks.Count - 1].groupBox);
 
         }
 
-        void mouseHook_MouseWheel(object sender, MouseEventArgs e)
+        void MouseHook_MouseWheel(object sender, MouseEventArgs e)
         {
             lbl_message.Text = e.Delta.ToString();
             int X = MouseSimulator.X;
             int Y = MouseSimulator.Y;
             clicks.Add(new Click(clicks.Count, X, Y));
-            this.Controls.Add(clicks[clicks.Count - 1].box);
+            this.Controls.Add(clicks[clicks.Count - 1].groupBox);
         }
 
-        void mouseHook_MouseDown(object sender, MouseEventArgs e)
+        void MouseHook_MouseDown(object sender, MouseEventArgs e)
         {
             lbl_message.Text = e.Button.ToString() + ", " + e.X.ToString() + ", " + e.Y.ToString();
             int X = MouseSimulator.X;
             int Y = MouseSimulator.Y;
             clicks.Add(new Click(clicks.Count, X, Y));
-            this.Controls.Add(clicks[clicks.Count - 1].box);
+            this.Controls.Add(clicks[clicks.Count - 1].groupBox);
         }
-        void mouseHook_MouseUp(object sender, MouseEventArgs e)
+        void MouseHook_MouseUp(object sender, MouseEventArgs e)
         {
             lbl_message.Text = e.Button.ToString() + ", " + e.X.ToString() + ", " + e.Y.ToString();
             //int X = MouseSimulator.X;
@@ -101,5 +98,5 @@ namespace ClickRecorder
     }
 
 
-
+   
 }

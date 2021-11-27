@@ -45,7 +45,7 @@ namespace ClickRecorder
             this.btn_save.TabIndex = 0;
             this.btn_save.Text = "Save";
             this.btn_save.UseVisualStyleBackColor = true;
-            this.btn_save.Click += new System.EventHandler(this.btn_save_Click);
+            this.btn_save.Click += new System.EventHandler(this.Btn_save_Click);
             // 
             // btn_record
             // 
@@ -55,12 +55,12 @@ namespace ClickRecorder
             this.btn_record.TabIndex = 1;
             this.btn_record.Text = "Record";
             this.btn_record.UseVisualStyleBackColor = true;
-            this.btn_record.Click += new System.EventHandler(this.btn_record_Click);
+            this.btn_record.Click += new System.EventHandler(this.Btn_record_Click);
             // 
             // lbl_message
             // 
             this.lbl_message.AutoSize = true;
-            this.lbl_message.Location = new System.Drawing.Point(262, 37);
+            this.lbl_message.Location = new System.Drawing.Point(262, 21);
             this.lbl_message.Name = "lbl_message";
             this.lbl_message.Size = new System.Drawing.Size(31, 13);
             this.lbl_message.TabIndex = 2;
@@ -73,7 +73,7 @@ namespace ClickRecorder
             this.groupBox1.Controls.Add(this.btn_debug_click);
             this.groupBox1.Controls.Add(this.btn_record);
             this.groupBox1.Controls.Add(this.btn_save);
-            this.groupBox1.Location = new System.Drawing.Point(16, 16);
+            this.groupBox1.Location = new System.Drawing.Point(16, 0);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(0);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(0);
@@ -90,7 +90,7 @@ namespace ClickRecorder
             this.btn_debug_click.TabIndex = 3;
             this.btn_debug_click.Text = "Debug Click";
             this.btn_debug_click.UseVisualStyleBackColor = true;
-            this.btn_debug_click.Click += new System.EventHandler(this.btn_debug_click_Click);
+            this.btn_debug_click.Click += new System.EventHandler(this.Btn_debug_click_Click);
             // 
             // Form1
             // 
@@ -98,11 +98,12 @@ namespace ClickRecorder
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(496, 473);
+            this.ClientSize = new System.Drawing.Size(321, 103);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.lbl_message);
             this.Name = "Form1";
             this.Padding = new System.Windows.Forms.Padding(16);
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "\\";
             this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
