@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.IO;
 using MouseKeyboardLibrary;
-
+using System.Runtime.InteropServices;
+using System.Diagnostics;
+//using Winook;
 namespace ClickRecorder
 {
 
@@ -27,8 +29,6 @@ namespace ClickRecorder
             Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod());
             lbl_message.Text = "Saving...";
 
-            List<Click> json_formatted_clicks = new List<Click>();
-
             foreach (Click c in clicks)
             {
                 c.fileName = c.index.ToString("D3")+".png";
@@ -41,23 +41,33 @@ namespace ClickRecorder
             System.Environment.Exit(1);
         }
 
+        Boolean recording = false;
         private void Btn_record_Click(object sender, EventArgs e)
         {
+  
+            recording = !recording;//toggle
+            if (recording && Helper.ApplicationIsActivated())//If recording and the GUI for this application is not focused
+            {
+                lbl_message.Text = "Recording...";
 
-            lbl_message.Text = "Recording...";
+                // Capture the events
+                mouseHook.MouseDown += new MouseEventHandler(MouseHook_MouseDown);
+                mouseHook.MouseUp += new MouseEventHandler(MouseHook_MouseUp);
+                mouseHook.MouseWheel += new MouseEventHandler(MouseHook_MouseWheel);
+                //mouseHook.DoubleClick += new EventHandler(MouseHook_DoubleClick);
+                // Start watching for mouse events
+                mouseHook.Start();
 
-            // Capture the events
-            mouseHook.MouseDown += new MouseEventHandler(MouseHook_MouseDown);
-            mouseHook.MouseUp += new MouseEventHandler(MouseHook_MouseUp);
-            mouseHook.MouseWheel += new MouseEventHandler(MouseHook_MouseWheel);
-
-            // Start watching for mouse events
-            mouseHook.Start();
+            }
+            else {
+                mouseHook.Stop();
+            }
+            
 
 
         }
 
-        private void Btn_debug_click_Click(object sender, EventArgs e)
+        private void Btn_Debug_Click(object sender, EventArgs e)
         {
             lbl_message.Text = "Debugging...";
 
@@ -76,8 +86,8 @@ namespace ClickRecorder
             int Y = MouseSimulator.Y;
             clicks.Add(new Click(clicks.Count, X, Y));
             this.Controls.Add(clicks[clicks.Count - 1].groupBox);
-        }
 
+        }
         void MouseHook_MouseDown(object sender, MouseEventArgs e)
         {
             lbl_message.Text = e.Button.ToString() + ", " + e.X.ToString() + ", " + e.Y.ToString();
@@ -94,6 +104,18 @@ namespace ClickRecorder
             //clicks.Add(new Click(clicks.Count, X, Y));
             //this.Controls.Add(clicks[clicks.Count - 1].box);
         }
+
+        void MouseHook_DoubleClick(object sender, EventArgs e)
+        {
+            //lbl_message.Text = e.Button.ToString() + ", " + e.X.ToString() + ", " + e.Y.ToString();
+            lbl_message.Text = "Double Click detected";
+            Console.WriteLine("Double Click detected");
+            //int X = MouseSimulator.X;
+            //int Y = MouseSimulator.Y;
+            //clicks.Add(new Click(clicks.Count, X, Y));
+            //this.Controls.Add(clicks[clicks.Count - 1].box);
+        }
+
 
     }
 

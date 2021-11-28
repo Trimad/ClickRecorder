@@ -90,7 +90,7 @@ namespace ClickRecorder
             this.btn_debug_click.TabIndex = 3;
             this.btn_debug_click.Text = "Debug Click";
             this.btn_debug_click.UseVisualStyleBackColor = true;
-            this.btn_debug_click.Click += new System.EventHandler(this.Btn_debug_click_Click);
+            this.btn_debug_click.Click += new System.EventHandler(this.Btn_Debug_Click);
             // 
             // Form1
             // 
