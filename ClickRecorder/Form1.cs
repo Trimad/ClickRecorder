@@ -3,24 +3,32 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.IO;
-using MouseKeyboardLibrary;
+//using MouseKeyboardLibrary;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
-//using Winook;
+using Winook;
 namespace ClickRecorder
 {
 
 
     public partial class Form1 : Form
     {
+        _mouseHook = new MouseHook(_process.Id);
 
-        MouseHook mouseHook = new MouseHook();
+        private void MouseHook_MessageReceived(object sender, MouseMessageEventArgs e)
+        {
+            Debug.Write($"Code: {e.MessageCode}; X: {e.X}; Y: {e.Y}; Modifiers: {e.Modifiers:x}; ");
+            Debug.WriteLine($"Delta: {e.Delta}; XButtons: {e.XButtons}");
+
+        }
+        //MouseHook mouseHook = new MouseHook();
         List<Click> clicks = new List<Click>();
         public Form1()
         {
             InitializeComponent();
             // Create the mouse hook
             //MouseHook mouseHook = new MouseHook();
+
 
         }
 
@@ -46,22 +54,22 @@ namespace ClickRecorder
         {
   
             recording = !recording;//toggle
-            if (recording && Helper.ApplicationIsActivated())//If recording and the GUI for this application is not focused
-            {
-                lbl_message.Text = "Recording...";
+            //if (recording && Helper.ApplicationIsActivated())//If recording and the GUI for this application is not focused
+            //{
+            //    lbl_message.Text = "Recording...";
 
-                // Capture the events
-                mouseHook.MouseDown += new MouseEventHandler(MouseHook_MouseDown);
-                mouseHook.MouseUp += new MouseEventHandler(MouseHook_MouseUp);
-                mouseHook.MouseWheel += new MouseEventHandler(MouseHook_MouseWheel);
-                //mouseHook.DoubleClick += new EventHandler(MouseHook_DoubleClick);
-                // Start watching for mouse events
-                mouseHook.Start();
+            //    // Capture the events
+            //    mouseHook.MouseDown += new MouseEventHandler(MouseHook_MouseDown);
+            //    mouseHook.MouseUp += new MouseEventHandler(MouseHook_MouseUp);
+            //    mouseHook.MouseWheel += new MouseEventHandler(MouseHook_MouseWheel);
+            //    //mouseHook.DoubleClick += new EventHandler(MouseHook_DoubleClick);
+            //    // Start watching for mouse events
+            //    mouseHook.Start();
 
-            }
-            else {
-                mouseHook.Stop();
-            }
+            //}
+            //else {
+            //    mouseHook.Stop();
+            //}
             
 
 
@@ -69,52 +77,43 @@ namespace ClickRecorder
 
         private void Btn_Debug_Click(object sender, EventArgs e)
         {
-            lbl_message.Text = "Debugging...";
+            //lbl_message.Text = "Debugging...";
 
-            int X = MouseSimulator.X;
-            int Y = MouseSimulator.Y;
-
-            clicks.Add(new Click(clicks.Count, X, Y));
-            this.Controls.Add(clicks[clicks.Count - 1].groupBox);
-
-        }
-
-        void MouseHook_MouseWheel(object sender, MouseEventArgs e)
-        {
-            lbl_message.Text = e.Delta.ToString();
-            int X = MouseSimulator.X;
-            int Y = MouseSimulator.Y;
-            clicks.Add(new Click(clicks.Count, X, Y));
-            this.Controls.Add(clicks[clicks.Count - 1].groupBox);
-
-        }
-        void MouseHook_MouseDown(object sender, MouseEventArgs e)
-        {
-            lbl_message.Text = e.Button.ToString() + ", " + e.X.ToString() + ", " + e.Y.ToString();
-            int X = MouseSimulator.X;
-            int Y = MouseSimulator.Y;
-            clicks.Add(new Click(clicks.Count, X, Y));
-            this.Controls.Add(clicks[clicks.Count - 1].groupBox);
-        }
-        void MouseHook_MouseUp(object sender, MouseEventArgs e)
-        {
-            lbl_message.Text = e.Button.ToString() + ", " + e.X.ToString() + ", " + e.Y.ToString();
             //int X = MouseSimulator.X;
             //int Y = MouseSimulator.Y;
+
             //clicks.Add(new Click(clicks.Count, X, Y));
-            //this.Controls.Add(clicks[clicks.Count - 1].box);
+            //this.Controls.Add(clicks[clicks.Count - 1].groupBox);
+
         }
 
-        void MouseHook_DoubleClick(object sender, EventArgs e)
-        {
-            //lbl_message.Text = e.Button.ToString() + ", " + e.X.ToString() + ", " + e.Y.ToString();
-            lbl_message.Text = "Double Click detected";
-            Console.WriteLine("Double Click detected");
-            //int X = MouseSimulator.X;
-            //int Y = MouseSimulator.Y;
-            //clicks.Add(new Click(clicks.Count, X, Y));
-            //this.Controls.Add(clicks[clicks.Count - 1].box);
-        }
+        //void MouseHook_MouseDown(object sender, MouseEventArgs e)
+        //{
+        //    lbl_message.Text = e.Button.ToString() + ", " + e.X.ToString() + ", " + e.Y.ToString();
+        //    int X = MouseSimulator.X;
+        //    int Y = MouseSimulator.Y;
+        //    clicks.Add(new Click(clicks.Count, X, Y));
+        //    this.Controls.Add(clicks[clicks.Count - 1].groupBox);
+        //}
+        //void MouseHook_MouseUp(object sender, MouseEventArgs e)
+        //{
+        //    lbl_message.Text = e.Button.ToString() + ", " + e.X.ToString() + ", " + e.Y.ToString();
+        //    //int X = MouseSimulator.X;
+        //    //int Y = MouseSimulator.Y;
+        //    //clicks.Add(new Click(clicks.Count, X, Y));
+        //    //this.Controls.Add(clicks[clicks.Count - 1].box);
+        //}
+
+        //void MouseHook_DoubleClick(object sender, EventArgs e)
+        //{
+        //    //lbl_message.Text = e.Button.ToString() + ", " + e.X.ToString() + ", " + e.Y.ToString();
+        //    lbl_message.Text = "Double Click detected";
+        //    Console.WriteLine("Double Click detected");
+        //    //int X = MouseSimulator.X;
+        //    //int Y = MouseSimulator.Y;
+        //    //clicks.Add(new Click(clicks.Count, X, Y));
+        //    //this.Controls.Add(clicks[clicks.Count - 1].box);
+        //}
 
 
     }
