@@ -18,7 +18,7 @@ namespace ClickRecorder
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern int GetWindowThreadProcessId(IntPtr handle, out int processId);
 
-        public static Boolean ApplicationIsActivated()
+        public static Boolean ApplicationIsFocused()
         {
             var activatedHandle = GetForegroundWindow();
             if (activatedHandle == IntPtr.Zero)
