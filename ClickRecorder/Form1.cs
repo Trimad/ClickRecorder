@@ -9,6 +9,7 @@ using System.Drawing;
 using System.Threading;
 using Gma.System.MouseKeyHook;//https://github.com/gmamaladze/globalmousekeyhook/blob/vNext/examples/FormsExample/Main.cs
 using System.ComponentModel;
+using System.Drawing.Imaging;
 
 namespace ClickRecorder
 {
@@ -19,6 +20,7 @@ namespace ClickRecorder
         private IKeyboardMouseEvents m_Events;
         Point click;
         List<ClickPackage> clicks = new List<ClickPackage>();
+
         public Form1()
         {
             InitializeComponent();
@@ -70,6 +72,7 @@ namespace ClickRecorder
 
             m_Events.Dispose();
             m_Events = null;
+
         }
 
         private void HookManager_Supress(object sender, MouseEventExtArgs e)
@@ -125,7 +128,6 @@ namespace ClickRecorder
             {
                 click = new Point(e.X, e.Y);
                 FlowLayoutPanel panel = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight };
-
                 clicks.Add(new ClickPackage(clicks.Count, click.X, click.Y, panel));
                 flowLayoutPanel1.Controls.Add(clicks[clicks.Count - 1].panel);
             }
@@ -184,11 +186,21 @@ namespace ClickRecorder
             Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod());
             btn_save.Text = "Saving...";
             Unsubscribe();//Stop recording if the user hasn't already before saving.
-            foreach (ClickPackage c in clicks)
+
+            for (int i = clicks.Count - 1; i >= 0; i--)
             {
-                c.fileName = c.index.ToString("D3") + ".png";
-                c.info = c.getText();
-                c.saveImage();
+                if (clicks[i].deleted)
+                {
+                    clicks.Remove(clicks[i]);
+                }
+            }
+            for (int i = 0; i < clicks.Count; i++)
+            {
+
+                clicks[i].fileName = i.ToString("D3") + ".png";
+                clicks[i].info = clicks[i].getText();
+                string image_path = Path.Combine("data", i.ToString("D3") + ".png");
+                clicks[i].bmp.Save(image_path, ImageFormat.Png);
             }
             string json = JsonConvert.SerializeObject(clicks);
             string path = Path.Combine("data", "clicks.json");
@@ -205,7 +217,11 @@ namespace ClickRecorder
         {
 
         }
+
+
+
     }
+
 
 
 

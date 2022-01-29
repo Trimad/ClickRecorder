@@ -11,11 +11,12 @@ namespace ClickRecorder
     //https://stackoverflow.com/questions/46316025/how-to-resize-controls-inside-groupbox-without-overlapping
     public class ClickPackage
     {
-        public int index { get; set; }
         public String fileName { get; set; }
         public int mouseX { get; set; }
         public int mouseY { get; set; }
         public String info { get; set; }
+        [JsonIgnore]
+        public Boolean deleted = false;
         [JsonIgnore]
         public FlowLayoutPanel panel;
         [JsonIgnore]
@@ -23,11 +24,13 @@ namespace ClickRecorder
         [JsonIgnore]
         private TextBox textBox;
         [JsonIgnore]
-        private Bitmap bmp;
+        private Button deleteButton;
+        [JsonIgnore]
+        public Bitmap bmp;
+        
         public ClickPackage(int _index, int _mouseX, int _mouseY, FlowLayoutPanel _panel)
         {
             this.panel = _panel;
-            this.index = _index;
             this.mouseX = _mouseX;
             this.mouseY = _mouseY;
 
@@ -48,11 +51,21 @@ namespace ClickRecorder
             this.textBox = new TextBox
             {
                 AutoSize = true,
-                Height=32,
+                Height = 32,
                 Text = this.info
             };
             panel.Controls.Add(textBox);
 
+
+            this.deleteButton = new Button
+            {
+                Text = "Remove",
+                BackColor = Color.Red
+            };
+
+            this.deleteButton.Click += new EventHandler(DeleteEvent);
+
+            panel.Controls.Add(deleteButton);
 
             //this.picture.Anchor = (AnchorStyles.Left | AnchorStyles.Right);
             //this.textBox.Anchor = (AnchorStyles.Left | AnchorStyles.Right);
@@ -60,15 +73,10 @@ namespace ClickRecorder
 
         }
 
+        private void DeleteEvent(object sender, EventArgs e) { panel.Visible = false; bmp = null; deleted = true; }
         public String getText()
         {
             return this.textBox.Text;
-        }
-
-        public void saveImage()
-        {
-            string image_path = Path.Combine("data", this.index.ToString("D3") + ".png");
-            bmp.Save(image_path, ImageFormat.Png);  // saves the image THIS IS WHERE I LEFT OFF THE IMAGES ARE NOT SAVING
         }
 
         public ClickPackage() { }

@@ -77,7 +77,7 @@ namespace ClickRecorder
             this.groupBox2.Location = new System.Drawing.Point(190, 19);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(134, 45);
-            this.groupBox2.TabIndex = 4;
+            this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Information";
             // 
@@ -90,9 +90,9 @@ namespace ClickRecorder
             this.groupBox1.Location = new System.Drawing.Point(19, 19);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(165, 61);
-            this.groupBox1.TabIndex = 6;
+            this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "groupBox1";
+            this.groupBox1.Text = "Controls";
             // 
             // flowLayoutPanel1
             // 
@@ -101,7 +101,7 @@ namespace ClickRecorder
             this.flowLayoutPanel1.Location = new System.Drawing.Point(19, 86);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(200, 100);
-            this.flowLayoutPanel1.TabIndex = 7;
+            this.flowLayoutPanel1.TabIndex = 5;
             // 
             // Form1
             // 
