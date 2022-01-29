@@ -16,11 +16,11 @@ namespace ClickRecorder
         public int mouseY { get; set; }
         public String info { get; set; }
         [JsonIgnore]
-        public Boolean deleted = false;
+        public Boolean purge = false;
         [JsonIgnore]
         public FlowLayoutPanel panel;
         [JsonIgnore]
-        private PictureBox picture;
+        private PictureBox pb;
         [JsonIgnore]
         private TextBox textBox;
         [JsonIgnore]
@@ -39,13 +39,14 @@ namespace ClickRecorder
             {
                 g.CopyFromScreen(0, 0, 0, 0, Screen.PrimaryScreen.Bounds.Size);
             }
-
-            this.picture = new PictureBox
+            
+            this.pb = new PictureBox
             {
                 SizeMode = PictureBoxSizeMode.Zoom,
                 Image = bmp
             };
-            panel.Controls.Add(this.picture);
+            panel.BorderStyle = BorderStyle.Fixed3D;
+            panel.Controls.Add(this.pb);
 
             this.info = "Type a useful description...";
             this.textBox = new TextBox
@@ -72,8 +73,8 @@ namespace ClickRecorder
             this.textBox.Width = this.textBox.Parent.Width;
 
         }
-
-        private void DeleteEvent(object sender, EventArgs e) { panel.Visible = false; bmp = null; deleted = true; }
+        
+        private void DeleteEvent(object sender, EventArgs e) { panel.Visible = false; bmp = null; purge = true; }
         public String getText()
         {
             return this.textBox.Text;

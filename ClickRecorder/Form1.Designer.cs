@@ -48,6 +48,7 @@ namespace ClickRecorder
             this.btn_save.Text = "Save";
             this.btn_save.UseVisualStyleBackColor = true;
             this.btn_save.Click += new System.EventHandler(this.Btn_Save_Click);
+            this.btn_save.Enabled = false;
             // 
             // btn_record
             // 
